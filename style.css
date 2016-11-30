@@ -1,0 +1,11 @@
+ul li {
+    padding: 5px;
+}
+
+ul li.checked {
+    text-decoration: line-through;
+}
+
+#popup {
+    display: none;
+}
