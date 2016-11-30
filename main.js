@@ -9,6 +9,7 @@ window.addEventListener('load', function () {
 
     editButton.className = 'edit';
     removeButton.className = 'remove';
+
     view();
 
     document

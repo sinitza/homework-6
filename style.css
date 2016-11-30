@@ -1,9 +1,77 @@
+body {
+    width: 300px;
+    margin: 0 auto;
+}
+
+input {
+    width: 190px;
+    height: 24px;
+}
+
+button#add {
+    width: 100px;
+    height: 30px;
+    border: none;
+    cursor: pointer;
+}
+
+ul {
+    margin-top: 10px;
+    margin: 0;
+    padding: 0;
+    width: 298px;
+    list-style: none;
+}
+
 ul li {
-    padding: 5px;
+    cursor: pointer;
+    padding: 12px 8px 12px 25px;
+    font-size: 15px;
+    background: #ddd;
+    margin: 5px 0 5px 0;
+}
+
+ul li:hover, button:hover {
+    background: darkseagreen;
 }
 
 ul li.checked {
+    padding: 12px 8px 12px 25px;
+    background: white;
     text-decoration: line-through;
+}
+
+li button {
+    padding: 8px;
+    float: right;
+    border: none;
+}
+
+li button.remove {
+    background-color: red;
+    color: white;
+}
+
+li button.edit {
+    background-color: green;
+    color: white;
+    margin-left: 5px;
+}
+
+li button.remove:hover {
+    border: 1px solid white;
+}
+
+li button.edit:hover {
+    border: 1px solid white;
+}
+
+h2 {
+    font-size: 13px;
+}
+
+h1 {
+    text-align: center;
 }
 
 #popup {
