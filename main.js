@@ -11,31 +11,44 @@ window.addEventListener('load', function () {
     removeButton.className = 'remove';
 
     view();
+    input.addEventListener('keypress', function (event) {
+        if (event.keyCode === 13) {
+            add();
+        }
+    });
 
     document
         .getElementById('add')
-        .addEventListener('click', function (event) {
+        .addEventListener('click', add);
+
+    function add() {
         if (localStorage.getItem('items')){
             arrayTasks = JSON.parse(localStorage.getItem('items'));
         } else {
             arrayTasks = [];
         }
-            if (input.value) {
-                arrayTasks.push(input.value);
-                input.value = '';
-                localStorage.setItem('items', JSON.stringify(arrayTasks));
-                render();
-            } else {
-                alert('you do not write');
-            }
-    });
+        if (input.value) {
+            arrayTasks.push({
+                value: input.value,
+                done: false
+            });
+            input.value = '';
+            localStorage.setItem('items', JSON.stringify(arrayTasks));
+            render();
+        } else {
+            alert('you do not write');
+        }
+    }
 
     function view() {
         var array = JSON.parse(localStorage.getItem('items')) || [];
-        console.log(array);
+
         for (var i = 0; i < array.length; i++) {
             var li = document.createElement('li');
-            li.innerText = array[i];
+            li.innerText = array[i].value;
+            if (array[i].done === true){
+                li.classList.add('checked');
+            }
             var editBtn = editButton.cloneNode();
             var removeBtn = removeButton.cloneNode();
             editBtn.addEventListener('click', editHandler);
@@ -52,7 +65,7 @@ window.addEventListener('load', function () {
         var array = JSON.parse(localStorage.getItem('items'));
 
         var li = document.createElement('li');
-        li.innerText = array[array.length-1];
+        li.innerText = array[array.length-1].value;
         var editBtn = editButton.cloneNode();
         var removeBtn = removeButton.cloneNode();
         editBtn.addEventListener('click', editHandler);
@@ -66,7 +79,7 @@ window.addEventListener('load', function () {
 
     function editHandler(event) {
         var array = JSON.parse(localStorage.getItem('items'));
-        console.log(array);
+
         this.classList.add('checked');
         popup.style.display = 'block';
         var inputEdit = document.getElementById('edit-input');
@@ -80,12 +93,11 @@ window.addEventListener('load', function () {
                 btnEdit.classList.remove('checked');
                 popup.style.display = 'none';
             }
-            for (var i=0; i<array.length;i++){
-                if (array[i] === a){
-                    array[i] = inputEdit.value;
+            for (var i=0; i < array.length; i++){
+                if (array[i].value === a){
+                    array[i].value = inputEdit.value;
                 }
             }
-            console.log(array);
             localStorage.setItem('items', JSON.stringify(array));
         });
 
@@ -97,9 +109,9 @@ window.addEventListener('load', function () {
     function removeHandler() {
         var array = JSON.parse(localStorage.getItem('items'));
         var index;
-        console.log(this.parentElement.innerText)
+        console.log(this.parentElement.innerText);
         for (var i = 0; i < array.length; i++) {
-            if (array[i] === this.parentElement.innerText) {
+            if (array[i].value === this.parentElement.innerText) {
                 index = i;
                 this.parentElement.remove();
             }
@@ -111,15 +123,23 @@ window.addEventListener('load', function () {
     }
 
     function select(event) {
+        var array = JSON.parse(localStorage.getItem('items'));
         if (event.target.tagName == 'LI') {
             console.log(event);
             var el = event.toElement;
             el.classList.toggle('checked');
-            if (el.classList.contains('checked')) {
-                recount();
-            } else {
-                recount();
+
+            for (var i = 0; i < array.length; i++){
+                if (el.className === 'checked' && array[i].value === el.firstChild.nodeValue) {
+                    array[i].done = true;
+                } else {
+                    array[i].done = false;
+                    recount();
+                }
+                console.log(array[i].done);
             }
+
+        localStorage.setItem('items', JSON.stringify(array));
         }
     }
 
